@@ -7,7 +7,7 @@ import os
 
 
 
-def UpdateDataPipeline():
+def UpdateVesselsLocation():
     """
     Update the data pipeline
     """
@@ -28,4 +28,4 @@ def UpdateDataPipeline():
 
 
 if __name__ == '__main__':
-    UpdateDataPipeline()
+    UpdateVesselsLocation()

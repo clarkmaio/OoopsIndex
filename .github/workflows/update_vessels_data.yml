@@ -27,7 +27,7 @@ jobs:
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
 
       # Run the function
-      - name: Run GfsLastrunPipeline
+      - name: Run UpdateVesselsLocation
         run: |
           python -c "from src.pipeline.data_pipeline import UpdateVesselsLocation; UpdateVesselsLocation()"
         env:
