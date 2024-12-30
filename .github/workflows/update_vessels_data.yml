@@ -29,6 +29,6 @@ jobs:
       # Run the function
       - name: Run UpdateVesselsLocation
         run: |
-          python -c "from src.pipeline.data_pipeline import UpdateVesselsLocation; UpdateVesselsLocation()"
+          python -c "from src.pipeline.update_vessels_location import UpdateVesselsLocation; UpdateVesselsLocation()"
         env:
           HF_TOKEN: ${{ secrets.HF_TOKEN }}
