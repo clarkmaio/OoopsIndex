@@ -1,0 +1,9 @@
+pandas
+polars
+streamlit
+tqdm
+python-dotenv
+pyyaml
+duckdb
+datasets
+huggingface_hub
