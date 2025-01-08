@@ -76,7 +76,7 @@ def upload_dataframe_hf(df: pd.DataFrame, filename: str) -> None:
     upload_file(path_or_fileobj=buffer, 
                 repo_type='dataset',
                 path_in_repo=filename,
-                repo_id='clarkmaio/oops')
+                repo_id='clarkmaio/Ooops_dataset')
 
 
 if __name__ == '__main__':
