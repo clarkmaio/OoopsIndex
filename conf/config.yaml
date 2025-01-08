@@ -8,8 +8,6 @@ focus_area:
   latitude: [59, 60.7]
   longitude: [21, 30.5]
 
-
-
 MMSI_COUNTRY_MAP:
   201: Albania
   202: Andorra

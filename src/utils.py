@@ -9,6 +9,7 @@ from huggingface_hub import upload_file, login
 from typing import List
 load_dotenv()
 
+
 def timestamp_int_to_datetime(timestamp):
     return pd.to_datetime(timestamp, unit='ms')
 
@@ -18,9 +19,19 @@ def assign_country(df, country_flag_map: Dict):
 
 
 def get_country_flag_map():
-    return yaml.load(open('conf/config.yaml', 'r'), Loader=yaml.FullLoader)['MMSI_COUNTRY_MAP']
+    root_path = os.path.dirname(os.path.dirname(__file__))
+    config_path = os.path.join(root_path, 'conf/config.yaml')   
+    return yaml.load(open(config_path, 'r'), Loader=yaml.FullLoader)['MMSI_COUNTRY_MAP']
+
+def get_country_list():
+    mmsi_map = get_country_flag_map()
+    country_list =  list(set(mmsi_map.values()))
+    return country_list
+    
 
 
+def get_config():
+    return yaml.load(open('conf/config.yaml', 'r'), Loader=yaml.FullLoader)
 
 def parse_data(data: pd.DataFrame):
 
@@ -50,7 +61,6 @@ def get_vessels_locations_data(api_url: str = 'https://meri.digitraffic.fi/api/a
 
 
 
-#@retry(wait_random_min=3000, wait_random_max=5000)
 def upload_dataframe_hf(df: pd.DataFrame, filename: str) -> None:
     '''
     Upload dataframe to huggingface dataset as raw file.
