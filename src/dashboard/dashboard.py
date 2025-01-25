@@ -7,6 +7,7 @@ import plotly.express as px
 import plotly.graph_objects as go
 from io import BytesIO
 import numpy as np
+import holoviews as hv
 
 from src import utils
 
@@ -75,7 +76,7 @@ def postprocess_data(data, countries: List[str] = None, mmsi: List[int] = None):
 
 @st.cache_data
 def load_data():
-    data = pl.read_parquet('hf://datasets/clarkmaio/oops/vessels_location/*.pq').to_pandas()
+    data = pl.read_parquet('hf://datasets/clarkmaio/Ooops_dataset/vessels_location/*.pq').to_pandas()
     data.drop('__index_level_0__', axis=1, inplace=True, errors='ignore')    
     return data
 
@@ -108,6 +109,7 @@ if 'data' not in st.session_state:
 # Update index
 if update_index:
     mmsi_selection_integers = None if mmsi_selection == '' else [int(x) for x in mmsi_selection.split(',')]
+    st.session_state.data = load_data()
     st.session_state.data, st.session_state.last_data = postprocess_data(data=st.session_state.data, countries=country_selection, mmsi=mmsi_selection_integers)
 
 
@@ -223,6 +225,7 @@ fig.update_xaxes(title_text='')
 fig.update_yaxes(title_text='# tagged vessels')
 
 
+
 # plot first time
 if 'ts_plot' not in st.session_state:
     st.session_state.ts_plot = fig
@@ -232,7 +235,6 @@ if update_index:
     st.session_state.ts_plot = fig
 
 st.plotly_chart(st.session_state.ts_plot)
-
 
 
 with c2_metric:
