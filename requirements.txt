@@ -8,3 +8,4 @@ duckdb
 datasets
 huggingface_hub
 jupyter
+plotly
