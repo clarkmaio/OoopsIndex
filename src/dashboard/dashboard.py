@@ -7,7 +7,6 @@ import plotly.express as px
 import plotly.graph_objects as go
 from io import BytesIO
 import numpy as np
-import holoviews as hv
 
 from src import utils
 
@@ -81,7 +80,7 @@ def load_data():
     return data
 
 st.markdown("<h1 style='text-align: center; color: black;'>Ooops Index</h1>", unsafe_allow_html=True)
-
+st.markdown('')
 
 with st.sidebar:
     country_selection = st.multiselect(label='Countries', options=utils.get_country_list(), default=['Russia'])
