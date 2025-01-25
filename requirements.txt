@@ -9,3 +9,5 @@ datasets
 huggingface_hub
 jupyter
 plotly
+xlsxwriter
+
