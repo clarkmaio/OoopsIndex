@@ -35,6 +35,9 @@ def to_excel(dataframe):
     processed_data = output.getvalue()
     return processed_data
 
+def to_csv(dataframe):
+    return dataframe.to_csv().encode('utf-8')
+
 
 def filter_data(data, countries: List[str] = None, mmsi: List[int] = None):
     if countries is not None:
@@ -66,15 +69,13 @@ def return_filter_data(data, countries: List[str] = None, mmsi: List[int] = None
     data = tag_data(data, countries=countries, mmsi=mmsi)
     return data
 
-@st.cache_data
 def postprocess_data(data, countries: List[str] = None, mmsi: List[int] = None):
     data = tag_data(data, countries=countries, mmsi=mmsi)
     last_data = data.loc[data['timestamp_hourly'] == data['timestamp_hourly'].max()]
     return data, last_data 
 
-@st.cache_data
 def load_data():
-    data = pl.read_parquet('hf://datasets/clarkmaio/Ooops_dataset/vessels_location/*.pq').to_pandas()
+    data = pl.read_parquet('hf://datasets/clarkmaio/Ooops_dataset/vessels_location_history.pq').to_pandas()
     data.drop('__index_level_0__', axis=1, inplace=True, errors='ignore')    
     return data
 
@@ -113,36 +114,31 @@ with dashboard_tab:
         mmsi_selection = st.text_input(label='MMSI', value='518998865')
 
         st.markdown('<br><br>', unsafe_allow_html=True)
-        update_index = st.button(label='Refresh index', key='update_index', type='primary', use_container_width=True, icon=':material/sync:')
-        update_index = st.button(label='Load data', key='load_data', type='secondary', use_container_width=True, icon=':material/database:')
+        update_data = st.button(label='Update data', key='update_data', type='primary', use_container_width=True, icon=':material/sync:')
 
-        st.markdown('<br><br>', unsafe_allow_html=True)
+        st.markdown('<br>', unsafe_allow_html=True)
         st.download_button(
             label="Download data",
-            data=to_excel(pd.DataFrame()) if 'data' not in st.session_state else to_excel(st.session_state.data),
-            file_name="vessels.xlsx",
-            mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+            data=to_csv(pd.DataFrame()) if 'data' not in st.session_state else to_csv(st.session_state.data),
+            file_name="vessels.csv",
+            #mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
             use_container_width=True, icon=':material/download:'
         )
 
     #------------------------------- PREPARE DATA
-
     # First time load
     if 'data' not in st.session_state:
-        st.session_state.data = load_data()
+        st.session_state['data'] = load_data()
         mmsi_selection_integers = None if mmsi_selection == '' else [int(x) for x in mmsi_selection.split(',')]
-        st.session_state.data, st.session_state.last_data = postprocess_data(data=st.session_state.data, countries=country_selection, mmsi=mmsi_selection_integers)
+        st.session_state.data, st.session_state.last_data = postprocess_data(data=st.session_state['data'], countries=country_selection, mmsi=mmsi_selection_integers)
 
     # Update index
-    if update_index:
+    if update_data:
         mmsi_selection_integers = None if mmsi_selection == '' else [int(x) for x in mmsi_selection.split(',')]
         st.session_state.data = load_data()
-        st.session_state.data, st.session_state.last_data = postprocess_data(data=st.session_state.data, countries=country_selection, mmsi=mmsi_selection_integers)
-
-
+        st.session_state.data, st.session_state.last_data = postprocess_data(data=st.session_state['data'], countries=country_selection, mmsi=mmsi_selection_integers)
 
     c1_metric, c2_metric = st.columns(2)
-
     #  ------------------------------------------ PLOT
     fig = go.Figure()
 
@@ -258,7 +254,7 @@ with dashboard_tab:
         st.session_state.ts_plot = fig
 
     # update plot
-    if update_index:
+    if update_data:
         st.session_state.ts_plot = fig
 
     st.plotly_chart(fig)
