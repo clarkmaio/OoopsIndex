@@ -104,6 +104,12 @@ with info_tab:
 
     - Latitude: 59.2, 60.5
     - Longitude: 24, 27.5
+                
+
+    ### Code
+    Code is a mess.
+    You can find it [here](https://github.com/clarkmaio/OoopsIndex).
+    (Also if you know how to create timeseries animations using plotly let me know)
 
     """)
 
