@@ -39,7 +39,7 @@ def update_vessels_location_history(update_data: pd.DataFrame):
     api = HfApi()
     api.upload_file(
         path_or_fileobj=buffer,
-        path_in_repo="vessels_location_history2.pq",
+        path_in_repo="vessels_location_history.pq",
         repo_id="clarkmaio/Ooops_dataset",
         repo_type="dataset",
     )

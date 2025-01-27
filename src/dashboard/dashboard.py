@@ -114,7 +114,7 @@ with dashboard_tab:
         mmsi_selection = st.text_input(label='MMSI', value='518998865')
 
         st.markdown('<br><br>', unsafe_allow_html=True)
-        update_data = st.button(label='Update data', key='update_data', type='primary', use_container_width=True, icon=':material/sync:')
+        update_data = st.button(label='Refresh', key='update_data', type='primary', use_container_width=True, icon=':material/sync:')
 
         st.markdown('<br>', unsafe_allow_html=True)
         st.download_button(
